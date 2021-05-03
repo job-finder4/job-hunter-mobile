@@ -53,8 +53,9 @@
         },
         methods: {
             onLogin() {
-                const httpModule = require("http");
                 const dialogs = require("tns-core-modules/ui/dialogs");
+                dialogs.alert(this.$store.getters.getAccessToken);
+                const httpModule = require("http");
 
 
                 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
@@ -64,32 +65,30 @@
                 //         console.log(response.data)
                 //         console.log('response received')
                 //     })
-                //
-                // 	axios.get(`${apiUrl}/api/test`)
-                //        .then(response => {
-                //                console.log(response)
-                //                console.log(response.data)
-                //                console.log('response received')
-                //        })
 
                 const authHeader = {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 }
-                axios.post(`${apiUrl}/api/login`, this.user, {headers: authHeader})
-                    .then(response => {
-                        console.log('Inside oauth/token url')
-                        console.log(response.data)
-                        if (response.status === 200) {
-                            console.log('response qq')
-                        }
-                    })
-                    .catch((err) => {
-                        if (err.response.status === 401) {
-                            console.log('Validation error')
-                        } else
-                            console.log('Something went wrong')
-                    })
+                if(this.$store.getters.getAccessToken){
+                    axios.post(`${apiUrl}/api/login`, this.user, {headers: authHeader})
+                        .then(response => {
+                            console.log(response.data)
+                            if (response.status === 200) {
+                                this.$store.commit('RETRIEVE_TOKEN', response.data);
+                                // this.$navigateTo(App)
+                                dialogs.alert(this.$store.getters.getAccessToken);
+                                console.log('response qq')
+                            }
+                        })
+                        .catch((err) => {
+                            if (err.response.status === 401) {
+                                console.log('Validation error')
+                            } else
+                                console.log('Something went wrong')
+                        })
+                }
+
             }
         },
     }
