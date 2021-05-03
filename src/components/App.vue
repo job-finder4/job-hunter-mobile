@@ -11,9 +11,20 @@
                 </GridLayout>
             </TabViewItem>
             <TabViewItem title="Tab 2">
-                <GridLayout columns="*" rows="*">
-                    <Label class="message" text="Tab 2 Content" col="0" row="0"/>
-                </GridLayout>
+                <StackLayout>
+                    <StackLayout>
+                        <TextField v-model="user.email"></TextField>
+                    </StackLayout>
+                    <StackLayout>
+                        <TextField v-model="user.password" secure="true"></TextField>
+                    </StackLayout>
+                    <StackLayout>
+                        <Button  :text="btnName" @tap="onLogin"></Button>
+                    </StackLayout>
+                </StackLayout>
+                <!--                <GridLayout columns="*" rows="*">-->
+                <!--                    <Label class="message" text="Tab 2 Content" col="0" row="0"/>-->
+                <!--                </GridLayout>-->
             </TabViewItem>
             <TabViewItem title="Tab 3">
                 <GridLayout columns="*" rows="*">
@@ -24,14 +35,64 @@
     </Page>
 </template>
 
-<script >
-  export default {
-    data() {
-      return {
-        msg: 'Hello World!'
-      }
+<script>
+    import axios from 'axios/dist/axios'
+
+    const apiUrl = 'https://74cfac287ae5.ngrok.io'
+
+    export default {
+        data() {
+            return {
+                msg: 'Hello World!',
+                user: {
+                    email: 'admin@example.com',
+                    password: 'admin',
+                },
+                btnName:'login'
+            }
+        },
+        methods: {
+            onLogin() {
+                const httpModule = require("http");
+                const dialogs = require("tns-core-modules/ui/dialogs");
+
+
+                axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+                // axios.get(`${apiUrl}/api/test`)
+                //     .then(response => {
+                //         console.log('Inside oauth/token url')
+                //         console.log(response.data)
+                //         console.log('response received')
+                //     })
+                //
+                // 	axios.get(`${apiUrl}/api/test`)
+                //        .then(response => {
+                //                console.log(response)
+                //                console.log(response.data)
+                //                console.log('response received')
+                //        })
+
+                const authHeader = {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+                axios.post(`${apiUrl}/api/login`, this.user, {headers: authHeader})
+                    .then(response => {
+                        console.log('Inside oauth/token url')
+                        console.log(response.data)
+                        if (response.status === 200) {
+                            console.log('response qq')
+                        }
+                    })
+                    .catch((err) => {
+                        if (err.response.status === 401) {
+                            console.log('Validation error')
+                        } else
+                            console.log('Something went wrong')
+                    })
+            }
+        },
     }
-  }
 </script>
 
 <style scoped>

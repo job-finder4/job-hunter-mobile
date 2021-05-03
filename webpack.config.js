@@ -1,9 +1,9 @@
-const { join, relative, resolve, sep } = require("path");
+const {join, relative, resolve, sep} = require("path");
 
 const webpack = require("webpack");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
 const TerserPlugin = require("terser-webpack-plugin");
 
 const VueLoaderPlugin = require('vue-loader/lib/plugin');
@@ -11,7 +11,7 @@ const NsVueTemplateCompiler = require("nativescript-vue-template-compiler");
 
 const nsWebpack = require("@nativescript/webpack");
 const nativescriptTarget = require("@nativescript/webpack/nativescript-target");
-const { NativeScriptWorkerPlugin } = require("nativescript-worker-loader/NativeScriptWorkerPlugin");
+const {NativeScriptWorkerPlugin} = require("nativescript-worker-loader/NativeScriptWorkerPlugin");
 const hashSalt = Date.now().toString();
 
 module.exports = env => {
@@ -65,7 +65,7 @@ module.exports = env => {
     const mode = production ? "production" : "development"
 
     const appFullPath = resolve(projectRoot, appPath);
-    const hasRootLevelScopedModules = nsWebpack.hasRootLevelScopedModules({ projectDir: projectRoot });
+    const hasRootLevelScopedModules = nsWebpack.hasRootLevelScopedModules({projectDir: projectRoot});
     let coreModulesPackageName = "tns-core-modules";
     const alias = env.alias || {};
     alias['~/package.json'] = resolve(projectRoot, 'package.json');
@@ -80,7 +80,7 @@ module.exports = env => {
 
     const appResourcesFullPath = resolve(projectRoot, appResourcesPath);
 
-    const copyIgnore = { ignore: [`${relative(appPath, appResourcesFullPath)}/**`] };
+    const copyIgnore = {ignore: [`${relative(appPath, appResourcesFullPath)}/**`]};
 
     const entryModule = nsWebpack.getEntryModule(appFullPath, platform);
     const entryPath = `.${sep}${entryModule}`;
@@ -90,7 +90,8 @@ module.exports = env => {
     const areCoreModulesExternal = Array.isArray(env.externals) && env.externals.some(e => e.indexOf("@nativescript") > -1);
     if (platform === "ios" && !areCoreModulesExternal && !testing) {
         entries["tns_modules/@nativescript/core/inspector_modules"] = "inspector_modules";
-    };
+    }
+    ;
     console.log(`Bundling application for entryPath ${entryPath}...`);
 
     let sourceMapFilename = nsWebpack.getSourceMapFilename(hiddenSourceMap, __dirname, dist);
@@ -149,6 +150,7 @@ module.exports = env => {
             "setImmediate": false,
             "fs": "empty",
             "__dirname": false,
+            net: 'empty',
         },
         devtool: hiddenSourceMap ? "hidden-source-map" : (sourceMap ? "inline-source-map" : "none"),
         optimization: {
@@ -198,7 +200,7 @@ module.exports = env => {
                     // Require all Android app components
                     platform === "android" && {
                         loader: "@nativescript/webpack/helpers/android-app-components-loader",
-                        options: { modules: appComponents },
+                        options: {modules: appComponents},
                     },
 
                     {
@@ -214,73 +216,73 @@ module.exports = env => {
                     },
                 ].filter(loader => Boolean(loader)),
             },
-            {
-                test: /[\/|\\]app\.css$/,
-                use: [
-                    '@nativescript/webpack/helpers/style-hot-loader',
-                    {
-                        loader: "@nativescript/webpack/helpers/css2json-loader",
-                        options: { useForImports: true }
-                    },
-                ],
-            },
-            {
-                test: /[\/|\\]app\.scss$/,
-                use: [
-                    '@nativescript/webpack/helpers/style-hot-loader',
-                    {
-                        loader: "@nativescript/webpack/helpers/css2json-loader",
-                        options: { useForImports: true }
-                    },
-                    'sass-loader',
-                ],
-            },
-            {
-                test: /\.css$/,
-                exclude: /[\/|\\]app\.css$/,
-                use: [
-                    '@nativescript/webpack/helpers/style-hot-loader',
-                    '@nativescript/webpack/helpers/apply-css-loader.js',
-                    { loader: "css-loader", options: { url: false } },
-                ],
-            },
-            {
-                test: /\.scss$/,
-                exclude: /[\/|\\]app\.scss$/,
-                use: [
-                    '@nativescript/webpack/helpers/style-hot-loader',
-                    '@nativescript/webpack/helpers/apply-css-loader.js',
-                    { loader: "css-loader", options: { url: false } },
-                    'sass-loader',
-                ],
-            },
-            {
-                test: /\.js$/,
-                loader: 'babel-loader',
-            },
-            {
-                test: /\.ts$/,
-                loader: 'ts-loader',
-                options: {
-                    appendTsSuffixTo: [/\.vue$/],
-                    allowTsInNodeModules: true,
-                    compilerOptions: {
-                        declaration: false
-                    },
-                    getCustomTransformers: (program) => ({
-                        before: [
-                            require("@nativescript/webpack/transformers/ns-transform-native-classes").default
-                        ]
-                    })
+                {
+                    test: /[\/|\\]app\.css$/,
+                    use: [
+                        '@nativescript/webpack/helpers/style-hot-loader',
+                        {
+                            loader: "@nativescript/webpack/helpers/css2json-loader",
+                            options: {useForImports: true}
+                        },
+                    ],
                 },
-            },
-            {
-                test: /\.vue$/,
-                loader: "vue-loader",
-                options: {
-                    compiler: NsVueTemplateCompiler,
+                {
+                    test: /[\/|\\]app\.scss$/,
+                    use: [
+                        '@nativescript/webpack/helpers/style-hot-loader',
+                        {
+                            loader: "@nativescript/webpack/helpers/css2json-loader",
+                            options: {useForImports: true}
+                        },
+                        'sass-loader',
+                    ],
                 },
-            },
+                {
+                    test: /\.css$/,
+                    exclude: /[\/|\\]app\.css$/,
+                    use: [
+                        '@nativescript/webpack/helpers/style-hot-loader',
+                        '@nativescript/webpack/helpers/apply-css-loader.js',
+                        {loader: "css-loader", options: {url: false}},
+                    ],
+                },
+                {
+                    test: /\.scss$/,
+                    exclude: /[\/|\\]app\.scss$/,
+                    use: [
+                        '@nativescript/webpack/helpers/style-hot-loader',
+                        '@nativescript/webpack/helpers/apply-css-loader.js',
+                        {loader: "css-loader", options: {url: false}},
+                        'sass-loader',
+                    ],
+                },
+                {
+                    test: /\.js$/,
+                    loader: 'babel-loader',
+                },
+                {
+                    test: /\.ts$/,
+                    loader: 'ts-loader',
+                    options: {
+                        appendTsSuffixTo: [/\.vue$/],
+                        allowTsInNodeModules: true,
+                        compilerOptions: {
+                            declaration: false
+                        },
+                        getCustomTransformers: (program) => ({
+                            before: [
+                                require("@nativescript/webpack/transformers/ns-transform-native-classes").default
+                            ]
+                        })
+                    },
+                },
+                {
+                    test: /\.vue$/,
+                    loader: "vue-loader",
+                    options: {
+                        compiler: NsVueTemplateCompiler,
+                    },
+                },
             ],
         },
         plugins: [
@@ -296,17 +298,17 @@ module.exports = env => {
                 "process": "global.process"
             }),
             // Remove all files from the out dir.
-            new CleanWebpackPlugin({ 
-              cleanOnceBeforeBuildPatterns: itemsToClean,
-              verbose: !!verbose
+            new CleanWebpackPlugin({
+                cleanOnceBeforeBuildPatterns: itemsToClean,
+                verbose: !!verbose
             }),
             // Copy assets
             new CopyWebpackPlugin({
-              patterns: [
-                { from: 'assets/**', noErrorOnMissing: true, globOptions: { dot: false, ...copyIgnore } },
-                { from: 'fonts/**', noErrorOnMissing: true, globOptions: { dot: false, ...copyIgnore } },
-                { from: '**/*.+(jpg|png)', noErrorOnMissing: true, globOptions: { dot: false, ...copyIgnore } }
-              ],
+                patterns: [
+                    {from: 'assets/**', noErrorOnMissing: true, globOptions: {dot: false, ...copyIgnore}},
+                    {from: 'fonts/**', noErrorOnMissing: true, globOptions: {dot: false, ...copyIgnore}},
+                    {from: '**/*.+(jpg|png)', noErrorOnMissing: true, globOptions: {dot: false, ...copyIgnore}}
+                ],
             }),
             new nsWebpack.GenerateNativeScriptEntryPointsPlugin("bundle"),
             // For instructions on how to set up workers with webpack
@@ -332,7 +334,7 @@ module.exports = env => {
                 use: "@nativescript/webpack/helpers/markup-hot-loader"
             },
 
-            { test: /\.(html|xml)$/, use: "@nativescript/webpack/helpers/xml-namespace-loader" }
+            {test: /\.(html|xml)$/, use: "@nativescript/webpack/helpers/xml-namespace-loader"}
         );
     }
 
