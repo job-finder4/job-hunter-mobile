@@ -217,6 +217,7 @@ module.exports = env => {
                 ].filter(loader => Boolean(loader)),
             },
                 {
+
                     test: /[\/|\\]app\.css$/,
                     use: [
                         '@nativescript/webpack/helpers/style-hot-loader',
@@ -224,6 +225,7 @@ module.exports = env => {
                             loader: "@nativescript/webpack/helpers/css2json-loader",
                             options: {useForImports: true}
                         },
+                        'postcss-loader',
                     ],
                 },
                 {
@@ -234,7 +236,7 @@ module.exports = env => {
                             loader: "@nativescript/webpack/helpers/css2json-loader",
                             options: {useForImports: true}
                         },
-                        'sass-loader',
+                        'sass-loader', 'postcss-loader',
                     ],
                 },
                 {
@@ -244,6 +246,7 @@ module.exports = env => {
                         '@nativescript/webpack/helpers/style-hot-loader',
                         '@nativescript/webpack/helpers/apply-css-loader.js',
                         {loader: "css-loader", options: {url: false}},
+                        'postcss-loader',
                     ],
                 },
                 {

@@ -5,7 +5,8 @@ import store from '../store'
 import * as appSettings from "application-settings";
 
 export const apiClient=axios.create({
-  baseURL :'http://daniel.test/api/',
+  baseURL :'https://fef9135ad7c7.ngrok.io/api/',
+    timeout: 3000,
 })
 
 apiClient.interceptors.request.use(
@@ -36,8 +37,3 @@ apiClient.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
-
-
-
-

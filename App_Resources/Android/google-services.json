@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "1056525860553",
+    "project_id": "jobhunter-12d97",
+    "storage_bucket": "jobhunter-12d97.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056525860553:android:d758032f20633f783e1718",
+        "android_client_info": {
+          "package_name": "com.spectrum.jobHunter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056525860553-hehirm7vdannrqrne2gqi703g2mqlskk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeZwoCNzh1RsGEuF7fmH5sLSVJ8MyrZkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056525860553-hehirm7vdannrqrne2gqi703g2mqlskk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056525860553:android:903bd1c726776acc3e1718",
+        "android_client_info": {
+          "package_name": "org.nativescript.newC"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056525860553-hehirm7vdannrqrne2gqi703g2mqlskk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeZwoCNzh1RsGEuF7fmH5sLSVJ8MyrZkg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056525860553-hehirm7vdannrqrne2gqi703g2mqlskk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,109 +1,114 @@
 <template>
     <Page>
-        <ActionBar title="Welcome to NativeScript-Vue!" android:flat="true"/>
-        <TabView android:tabBackgroundColor="#53ba82"
-                 android:tabTextColor="#c4ffdf"
-                 android:selectedTabTextColor="#ffffff"
-                 androidSelectedTabHighlightColor="#ffffff">
-            <TabViewItem title="Tab 1">
-                <GridLayout columns="*" rows="*">
-                    <Label class="message" :text="msg" col="0" row="0"/>
-                </GridLayout>
-            </TabViewItem>
-            <TabViewItem title="Tab 2">
-                <StackLayout>
-                    <StackLayout>
-                        <TextField v-model="user.email"></TextField>
+        <ActionBar title="Login" class="action-bar"/>
+        <GridLayout>
+            <FlexboxLayout flexDirection="column" justifyContent="center">
+                <Image src="~/assets/images/q.svg" class="logo-container "/>
+
+                <StackLayout class="container">
+                    <StackLayout alignItems="center" class="border-bottom">
+                        <Image src="~/assets/images/icon_user.png" width="16" height="16"/>
+                        <TextField v-model="credentials.email" hint="Username"/>
                     </StackLayout>
-                    <StackLayout>
-                        <TextField v-model="user.password" secure="true"></TextField>
+
+                    <StackLayout class="border-bottom">
+                        <Image src="~/assets/images/icon_lock.png" width="16" height="16"/>
+                        <TextField v-model="credentials.password" hint="Password" secure="true"/>
                     </StackLayout>
-                    <StackLayout>
-                        <Button  :text="btnName" @tap="onLogin"></Button>
-                    </StackLayout>
+
+                    <Button text="Login" @tap="onLogin" class="my-button"/>
+
+                    <FlexboxLayout alignItems="center" justifyContent="space-between" class="auth-buttons">
+                        <Label horizontalAlignment="left" text="Create Account"/>
+                        <Label horizontalAlignment="right" text="Forgot Password"/>
+                    </FlexboxLayout>
                 </StackLayout>
-                <!--                <GridLayout columns="*" rows="*">-->
-                <!--                    <Label class="message" text="Tab 2 Content" col="0" row="0"/>-->
-                <!--                </GridLayout>-->
-            </TabViewItem>
-            <TabViewItem title="Tab 3">
-                <GridLayout columns="*" rows="*">
-                    <Label class="message" text="Tab 3 Content" col="0" row="0"/>
-                </GridLayout>
-            </TabViewItem>
-        </TabView>
+            </FlexboxLayout>
+        </GridLayout>
     </Page>
 </template>
 
 <script>
-    import axios from 'axios/dist/axios'
-
-    const apiUrl = 'https://74cfac287ae5.ngrok.io'
+    import Home from "./Home";
 
     export default {
         data() {
             return {
                 msg: 'Hello World!',
-                user: {
+                credentials: {
                     email: 'admin@example.com',
                     password: 'admin',
                 },
-                btnName:'login'
             }
         },
         methods: {
+            goTo() {
+                this.$navigateTo(Home, {
+                    transition: {
+                        name: 'fade',
+                        duration: 500
+                    }
+                })
+            },
             onLogin() {
-                const dialogs = require("tns-core-modules/ui/dialogs");
-                dialogs.alert(this.$store.getters.getAccessToken);
-                const httpModule = require("http");
-
-
-                axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-                // axios.get(`${apiUrl}/api/test`)
-                //     .then(response => {
-                //         console.log('Inside oauth/token url')
-                //         console.log(response.data)
-                //         console.log('response received')
-                //     })
-
-                const authHeader = {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-                if(this.$store.getters.getAccessToken){
-                    axios.post(`${apiUrl}/api/login`, this.user, {headers: authHeader})
-                        .then(response => {
-                            console.log(response.data)
-                            if (response.status === 200) {
-                                this.$store.commit('RETRIEVE_TOKEN', response.data);
-                                // this.$navigateTo(App)
-                                dialogs.alert(this.$store.getters.getAccessToken);
-                                console.log('response qq')
-                            }
-                        })
-                        .catch((err) => {
-                            if (err.response.status === 401) {
-                                console.log('Validation error')
-                            } else
-                                console.log('Something went wrong')
-                        })
-                }
-
+                this.$store.dispatch('login', this.credentials).then((resp) => {
+                    this.goTo()
+                })
             }
         },
+
     }
 </script>
 
-<style scoped>
-    ActionBar {
-        background-color: #53ba82;
-        color: #ffffff;
+<style>
+
+    .border-bottom {
+        border-bottom-width: 1;
+        border-bottom-color: white;
+        margin-bottom: 40;
+        padding-bottom: 8;
     }
 
-    .message {
-        vertical-align: center;
-        text-align: center;
-        font-size: 20;
-        color: #333333;
+    /*.form-input {*/
+    /*    !*color: white;*!*/
+    /*    placeholder-color: teal;*/
+    /*}*/
+
+    .icon-margin {
+        margin-right: 10;
+    }
+
+    .my-button {
+        background-color: #4BD5DC;
+        /*color: white;*/
+        font-weight: bold;
+        border-radius: 25;
+        border: solid 2px black;
+        box-shadow: black;
+        padding-top: 14;
+        padding-bottom: 14;
+        text-transform: uppercase;
+        letter-spacing: 0.1;
+        margin-bottom: 20;
+        margin-top: 10;
+    }
+
+    .auth-buttons {
+        /*color: white;*/
+        font-size: 14;
+    }
+
+    .full-height {
+        height: 100%;
+    }
+
+    .logo-container {
+        width: 150;
+        margin-bottom: 60;
+    }
+
+    .container {
+        margin-left: 34;
+        margin-right: 34;
     }
 </style>
