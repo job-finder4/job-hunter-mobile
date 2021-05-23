@@ -5,23 +5,21 @@
 <script>
     import {ToastPosition, Toasty} from "@triniwiz/nativescript-toasty"
 
-    export const popUpShow = function(message) {
-        new Toasty({ text: message })
+    export const popUpShowToast = function (message) {
+        new Toasty({text: message})
             .setToastPosition(ToastPosition.TOP)
-            .setBackgroundColor('#ff9999')
+            .setBackgroundColor('#91e773')
             .show();
     }
-    export const popupHide = function () {
+    export const popupHideToast = function () {
         // popupVisible.value = false
     }
 
     export default {
-        setup(){
+        setup() {
             return {
-                popupMessage, popupVisible, popupHide
+                popupMessage, popupVisible, popupHideToast
             }
         }
     }
 </script>
-
-

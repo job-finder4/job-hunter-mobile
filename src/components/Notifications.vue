@@ -13,8 +13,6 @@
             <Label style="font-size:60px" class="fa text-center" :text="'fa-bell' | fonticon"></Label>
         </Stacklayout>
 
-        <ActivityIndicator busy="true"/>
-
         <StackLayout v-if="notifications.length>0&&!isLoading">
             <ListView for="notification in notifications">
                 <v-template>
@@ -27,12 +25,19 @@
 </template>
 
 <script>
-    import {popUpShow, popupHide} from "./LoadingIndicator";
+    import {popUpShowIndicator, popupHideIndicator} from "./LoadingIndicator";
     import SingleNotification from "./notifications/SingleNotification"
-
+    import {showNetworkError} from "./Errors/ErrorController";
+import NetworkError from "./Errors/NetworkError";
     export default {
         components: {
-            appSingleNotification: SingleNotification
+            appSingleNotification: SingleNotification,
+            NetworkError
+        },
+        computed: {
+            notifications() {
+                return this.$store.getters.notifications
+            }
         },
         data() {
             return {
@@ -46,26 +51,27 @@
             showLoading() {
                 this.isLoading = true
                 console.log('execured')
-                popUpShow('ds', this.$refs.myFF)
+                popUpShowIndicator('ds', this.$refs.myFF)
 
                 this.$store.dispatch('retrieveNotification')
                     .then((res) => {
-                        console.log(this.notifications)
                         this.isLoading = false
-                        popupHide()
+                        popupHideIndicator()
                     })
                     .catch((err) => {
-                        popupHide()
+                        console.log('notification Not arrived')
+                        popupHideIndicator()
+                        // this.$navigateTo(NetworkError, {
+                        //     transition: {
+                        //         name: 'fade',
+                        //         duration: 500
+                        //     }
+                        // });
+                        // this.$store.dispacth('showErrorPage')
                         this.isLoading = false
-                        console.log('errorr45545')
                     })
             }
         },
-        computed: {
-            notifications() {
-                return this.$store.getters.notifications
-            }
-        }
     }
 </script>
 

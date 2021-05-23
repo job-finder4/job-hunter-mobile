@@ -1,7 +1,8 @@
 /* eslint-disable */
 
 import {apiClient} from "../services/apiService";
-import { popUpShow } from "../components/MyToast";
+import { popUpShowToast } from "../components/MyToast";
+import {popUpShowIndictorIndictor, popupHideIndictor} from "~/components/LoadingIndicator";
 
 const appSettings = require("tns-core-modules/application-settings");
 
@@ -10,7 +11,7 @@ export default {
         user: null
     },
     getters: {
-        user(state) {
+        getUser(state) {
             return state.user
         },
     },
@@ -44,20 +45,19 @@ export default {
         },
         login({commit, dispatch}, credentials) {
             return new Promise((resolve, reject) => {
-
                 apiClient.post('login', {
                     email: credentials.email,
                     password: credentials.password,
                 })
                     .then(response => {
                         commit('RETRIEVE_TOKEN', response.data)
-                        popUpShow("You Are Hell Damn Ok, LoggedIn")
+                        popUpShowToast("You Are Hell Damn Ok, LoggedIn")
                         // commit('SET_NOTIFICATION', {message: 'Hello', type: 'success'})
                         // dispatch('retrieveUser')
                         resolve()
                     })
                     .catch(error => {
-                        popUpShow(error.message)
+                        popUpShowToast(error.message)
                         // commit('SET_NOTIFICATION', {message: error.response.data, type: 'error'})
                         reject(error)
                     })

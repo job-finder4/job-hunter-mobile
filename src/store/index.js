@@ -3,8 +3,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import user from './user'
+import jobads from './jobads'
 import notifications from "./notifications";
 import {messaging} from "@nativescript/firebase/messaging";
+import Notifications from "../components/Notifications";
+import NetworkError from "~/components/Errors/NetworkError";
+import {showNetworkError} from "../components/Errors/ErrorController";
+
 
 // appSettings.hasKey("user_id")
 const appSettings = require("tns-core-modules/application-settings");
@@ -39,7 +44,10 @@ export default new Vuex.Store({
                 dispatch('retrieveUser')
             }
         },
-        subscribeForNotifications() {
+        showErrorPage() {
+            showNetworkError()
+        },
+        subscribeForNotifications({getters, dispatch}) {
             messaging.registerForPushNotifications({
                 onPushTokenReceivedCallback: (token) => {
                     console.log("Firebase plugin received a push token: " + token);
@@ -55,15 +63,18 @@ export default new Vuex.Store({
 
                 // Whether you want this plugin to always handle the notifications when the app is in foreground. Currently used on iOS only. Default false.
                 showNotificationsWhenInForeground: true
-            }).then(() => console.log("Registered for push"));
+            })
+                .then(() => console.log("Registered for push"));
 
-            messaging.subscribeToTopic("news").then(() => {
-                console.log('subscriped To news Topic')
-            });
+            messaging.subscribeToTopic("users." + getters.getUser.data.id)
+                .then(() => {
+                    console.log('subscriped To users.' + getters.getUser.data.id)
+                });
         }
     },
     modules: {
         user,
-        notifications
+        notifications,
+        jobads
     }
 })

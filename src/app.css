@@ -1,2 +1,14 @@
 @tailwind components;
 @tailwind utilities;
+@import '~@nativescript/theme/css/core.css';
+@import '~@nativescript/theme/css/default.css';
+
+
+/* ListView {
+    separator-color: transparent;
+
+
+} */
+.fa {
+    font-family: FontAwesome;
+  }

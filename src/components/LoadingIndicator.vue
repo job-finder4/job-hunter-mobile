@@ -5,11 +5,12 @@
 <script>
     const LoadingIndicator = require('@nstudio/nativescript-loading-indicator')
         .LoadingIndicator;
+
     const Mode = require('@nstudio/nativescript-loading-indicator').Mode;
 
     const loader = new LoadingIndicator();
 
-    export const popUpShow = function (message, someStackLayout) {
+    export const popUpShowIndicator = function (someStackLayout) {
         const options = {
             message: 'Loading...',
             details: 'Additional detail note!',
@@ -24,7 +25,7 @@
             hideBezel: true, // default false, can hide the surrounding bezel
             mode: Mode.Indeterminate, // see options below
             android: {
-                view: someStackLayout.android,// Target view to show on top of (Defaults to entire window)
+                view: someStackLayout,// Target view to show on top of (Defaults to entire window)
                 // view: android.view.View, // Target view to show on top of (Defaults to entire window)
                 cancelable: true,
                 cancelListener: function (dialog) {
@@ -34,14 +35,14 @@
         };
         loader.show(options); // options is optional
     }
-    export const popupHide = function () {
+    export const popupHideIndicator = function () {
         loader.hide();
     }
 
     export default {
         setup() {
             return {
-                popupMessage, popupVisible, popupHide
+                popUpShowIndicator, popupHideIndictor
             }
         }
     }
