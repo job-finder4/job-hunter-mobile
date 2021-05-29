@@ -25,17 +25,16 @@
       <Button
               style="margin:0;padding:0"
               class="myBtn border-b-2 border-t-2 border-green-600 divide-y divide-blue-400 btn-outlined"
-              androidElevation="1">
+              androidElevation="1"
+              @tap="elementLoaded">
         <FormattedString>
-          <Span   v-if="visible" class="fa" :text="'fa-arrow-down' | fonticon" />
-          <Span   v-if="!visible" class="fa" :text="'fa-arrow-up' | fonticon" />
+          <Span   v-if="visible" class="fa" :text="'fa-angle-down' | fonticon" />
+          <Span   v-if="!visible" class="fa" :text="'fa-angle-up' | fonticon" />
         </FormattedString>
       </Button>
-<!--      <Label style="font-size:18px" width="10%" v-if="!visible" class="fa btn-outlined" :text="'fa-arrow-up' | fonticon" ></Label>-->
-<!--      <Label width="10%" v-if="visible" class="fa" :text="'fa-arrow-down' | fonticon" ></Label>-->
     </FlexboxLayout>
 
-    <!-- <Button :text="title" @tap="elementLoaded" class="collapse-button"></Button> -->
+    
     <CollapseItem
       ref="myElement"
       :class="visible ? 'dropDownCheckboxGroup' : ''"

@@ -6,8 +6,9 @@ import * as appSettings from "application-settings";
 import MyJobs from "../components/jobs/MyJobs";
 
 export const apiClient = axios.create({
-    baseURL: 'https://36f4e03a186e.ngrok.io/api/',
-    timeout: 2000,
+    baseURL: 'http://192.168.1.105/55nuxt-laravel-passport-example-master/nuxt-laravel-passport-example-master/laravel/public/api/',
+    // baseURL: 'https://0ff256543af2.ngrok.io/api/',
+    timeout: 2500,
 })
 
 apiClient.interceptors.request.use(
@@ -19,7 +20,6 @@ apiClient.interceptors.request.use(
         return Promise.reject(error)
     }
 )
-
 apiClient.interceptors.response.use(
     response => response,
     error => {

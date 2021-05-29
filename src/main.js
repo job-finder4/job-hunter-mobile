@@ -2,11 +2,14 @@ import App from './components/App'
 import VueDevtools from 'nativescript-vue-devtools'
 import store from './store'
 import Home from './components/Home'
-import FilterComponent from '~/components/FilterComponent'
 import Vue from 'nativescript-vue';
 import {Fontawesome} from 'nativescript-fontawesome';
 import {TNSFontIcon, fonticon} from 'nativescript-fonticon';
 import FindJobs from "./components/FindJobs";
+
+import RadAutoComplete from 'nativescript-ui-autocomplete/vue';
+Vue.use(RadAutoComplete);
+
 
 Vue.registerElement(
     'CheckBox',
@@ -42,25 +45,17 @@ if (TNS_ENV !== 'production') {
 Vue.config.silent = (TNS_ENV === 'production')
 
 
-new Vue({
-    store,
-    render: h => h('frame', [h(FindJobs)])
-}).$start()
-
-const loggedIn = store.getters.isLoggedIn;
-// if (loggedIn) {
-//     store.dispatch("initApp")
-// }
-
-
 // new Vue({
 //     store,
-//     render: h => h("frame", [h(loggedIn ? Home : App)])
-// }).$start();
+//     render: h => h('frame', [h(FindJobs)])
+// }).$start()
 
+const loggedIn = store.getters.isLoggedIn;
+if (loggedIn) {
+    store.dispatch("initApp")
+}
 
-//Eddy Implementation
-// new v({
-//     render: h => h("frame", [h(loggedIn ? routes.home :
-//         (applicationSettingsService.getUsername() ? routes.login : routes.onboarding))])
-// }).$start();
+new Vue({
+    store,
+    render: h => h("frame", [h(loggedIn ? Home : App)])
+}).$start();

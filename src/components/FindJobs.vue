@@ -4,82 +4,113 @@
             <NavigationButton text="Go Back" android.systemIcon="ic_menu_back"/>
         </ActionBar>
 
-        <StackLayout ref="waiting">
-        </StackLayout>
+        <StackLayout ref="waiting"></StackLayout>
 
-        <StackLayout>
+        <FlexboxLayout flexDirection="column">
+            <TextField  class="text-capitalize myTextfield"
+                        @focus="navigateToAutocompleteComponent"
+                        :text="searchWords"
+                        hint="type skills or category"/>
+
             <Button
-                    style="color:white"
+                    style="margin-top:0;margin-bottom:0;text-align:left"
+                    text="Filters"
+                    @tap="navigateToFilter"
+                    class="btn btn-white text-2xl"
+            >
+            </Button>
+            <Button
+                    style="margin-top:0;margin-bottom:0;"
                     text="Find Jobs"
+                    class="btn btn-sky text-2xl"
                     @tap="findJobs"
-                    class="btn btn-outlined bg-indigo-400 text-2xl"
-            ></Button>
-        </StackLayout>
+            >
+            </Button>
+        </FlexboxLayout>
     </Page>
 </template>
 
 <script>
+    import Notifications from "./Notifications";
+    import AutoComplete from "~/components/AutoComplete";
     import CollapsableContainer from "~/components/CollapsableContainer";
     import FilterResult from "~/components/FilterResult";
     import {popUpShowIndicator, popupHideIndicator} from "~/components/LoadingIndicator";
+    import FilterComponent from "./FilterComponent";
 
     export default {
         components: {
             appCollapsableContainer: CollapsableContainer,
             FilterResult,
+            appAutoComplete:AutoComplete
         },
-        props: {},
-        computed: {},
+        computed:{
+          searchWords(){
+              let searchTermsInStringRepresentation=""
+
+              if (this.$store.getters.getSearchParams.term.length > 0) {
+                  this.$store.getters.getSearchParams.term.forEach(val => {
+                      searchTermsInStringRepresentation += val + ", ";
+                  })
+                  return searchTermsInStringRepresentation
+              }
+              return ""
+          }
+        },
         data() {
             return {
-                locations: ["Lattakia", "Cairo", "Aleppo", "Damascus",
-                    "Alabama", "Tartus", "Homs", "Port Fleta,Hong Kong"],
-                jobTimes: ["FULL_TIME", "PART_TIME"],
-                jobTypes: ["ON_SITE", "REMOTE"],
-                filters: {
-                    jobTimes: ["FULL_TIME"],
-                    jobTypes: [],
-                    locations: [],
-                },
             };
         },
         methods: {
-            findJobs(){
-              console.log('hatyyyy find jobs')
+            navigateToFilter(){
+                this.$navigateTo(FilterComponent, {
+                    transition: {
+                        name: "fade",
+                        duration: 500,
+                    },
+                });
             },
-            cancelFilters() {
-                if (Object.keys(this.filters).length === 0) {
-                    return;
-                }
-                this.filters.jobTimes = []
-                this.filters.jobTypes = []
-                this.filters.locations = []
+            navigateToAutocompleteComponent(){
+                this.$navigateTo(AutoComplete, {
+                    transition: {
+                        name: "fade",
+                        duration: 500,
+                    },
+                });
             },
-            applyFilters() {
-                popUpShowIndicator(this.$refs.filterComp.android)
-
-                this.$store
-                    .dispatch("getJobads", {
-                        params: {
-                            job_times: JSON.stringify(this.filters.jobTimes),
-                            job_types: JSON.stringify(this.filters.jobTypes),
-                            locations: JSON.stringify(this.filters.locations),
-                            page: 1
-                        }
-                    })
-                    .then((res) => {
-                        console.log(res)
-                        this.$navigateTo(FilterResult);
-                        popupHideIndicator()
-                        // this.setPaginationDetails({ paginationDetails: res.data.meta });
-                    })
-                    .catch((errr) => {
-                        popupHideIndicator()
-                        console.log(errr)
-                        // this.$toast.error(err);
-                    });
+            findJobs() {
+                this.$navigateTo(FilterResult, {
+                    transition: {
+                        name: "fade",
+                        duration: 500,
+                    },
+                });
             },
         },
+        created(){
+            // this.$store.
+        }
     };
 </script>
-<style scoped></style>
+<style >
+    .myTextfield{
+        font-size: 18px;
+        background-color: white;
+
+        border-top-width: 5px;
+        border-top-color: white;
+        border-top-left-radius: 10px;
+
+        border-right-width: 5px;
+        border-right-color: white;
+        border-top-right-radius: 10px;
+
+        border-left-width: 5px;
+        border-left-color: white;
+        border-bottom-left-radius: 10px;
+
+        border-bottom-width: 5px;
+        border-bottom-color: white;
+        border-bottom-right-radius: 10px;
+    }
+</style>

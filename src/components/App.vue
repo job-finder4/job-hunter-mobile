@@ -36,8 +36,8 @@
             return {
                 msg: 'Hello World!',
                 credentials: {
-                    email: 'admin@example.com',
-                    password: 'admin',
+                    email: 'ahmad48@gmail.com',
+                    password: 'danielFkasem1@',
                 },
             }
         },

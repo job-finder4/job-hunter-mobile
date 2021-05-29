@@ -6,6 +6,8 @@ import {popUpShowIndictorIndictor, popupHideIndictor} from "~/components/Loading
 
 const appSettings = require("tns-core-modules/application-settings");
 
+
+
 export default {
     state: {
         user: null
@@ -51,6 +53,7 @@ export default {
                 })
                     .then(response => {
                         commit('RETRIEVE_TOKEN', response.data)
+                        dispatch('subscribeForNotifications')
                         popUpShowToast("You Are Hell Damn Ok, LoggedIn")
                         // commit('SET_NOTIFICATION', {message: 'Hello', type: 'success'})
                         // dispatch('retrieveUser')
@@ -91,14 +94,21 @@ export default {
                     })
             })
         },
-        retrieveUser({commit}) {
-            apiClient.get('/user')
-                .then(response => {
-                    commit('RETRIEVE_USER', response.data)
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+        retrieveUser({commit,dispatch}) {
+            return new Promise((resolve, reject) => {
+                apiClient.get('/user')
+                    .then(response => {
+                        console.log(response.data)
+                        commit('RETRIEVE_USER', response.data)
+                        dispatch('subscribeForNotifications')
+                        resolve(response)
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        reject(error)
+                    })
+            })
+
         },
         changeMyPassword({commit}, {user, passwordInformations}) {
             apiClient.put('/users/' + user.id + '/change_password', {

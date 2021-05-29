@@ -2,6 +2,7 @@
     <Page @loaded="showLoading" @navigatingFrom="destroyComp" class="bg-indigo-100">
         <ActionBar
                 title="Notifications" android:flat="true">
+                <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="$navigateBack"/>
         </ActionBar>
 
         <StackLayout class="mx-8">
@@ -28,7 +29,7 @@
     import {popUpShowIndicator, popupHideIndicator} from "./LoadingIndicator";
     import SingleNotification from "./notifications/SingleNotification"
     import {showNetworkError} from "./Errors/ErrorController";
-import NetworkError from "./Errors/NetworkError";
+    import NetworkError from "./Errors/NetworkError";
     export default {
         components: {
             appSingleNotification: SingleNotification,
@@ -50,17 +51,17 @@ import NetworkError from "./Errors/NetworkError";
             },
             showLoading() {
                 this.isLoading = true
-                console.log('execured')
-                popUpShowIndicator('ds', this.$refs.myFF)
+                // console.log('execured')
+                // popUpShowIndicator('this.$refs.myFF')
 
                 this.$store.dispatch('retrieveNotification')
                     .then((res) => {
                         this.isLoading = false
-                        popupHideIndicator()
+                        // popupHideIndicator()
                     })
                     .catch((err) => {
                         console.log('notification Not arrived')
-                        popupHideIndicator()
+                        // popupHideIndicator()
                         // this.$navigateTo(NetworkError, {
                         //     transition: {
                         //         name: 'fade',

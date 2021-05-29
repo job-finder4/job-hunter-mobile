@@ -13,11 +13,11 @@
       </Label>
     </GridLayout>
 
-    <!-- <StackLayout>
-            <Button text="Connect" @tap="onLogin" class="nt-button"></Button>
+     <StackLayout>
+            <Button text="Connect" @tap="navigateToFindJobs" class="nt-button"></Button>
             <Button text="Notifications" @tap="navigate" class="nt-button"></Button>
-            <Button text="my jobs" @tap="navigateToJobs" class="nt-button"></Button>
-        </StackLayout> -->
+<!--            <Button text="my jobs" @tap="navigateToJobs" class="nt-button"></Button>-->
+        </StackLayout>
 
     <!--        <StackLayout>-->
     <!--            <ListView  for="item in jobs">-->
@@ -32,12 +32,12 @@
 <script>
 import SingleJob from "./SingleJob";
 import { messaging, Message } from "@nativescript/firebase/messaging";
-import { Color } from "tns-core-modules/color";
 import { LocalNotifications } from "nativescript-local-notifications";
 import Notifications from "./Notifications";
 import MyJobs from "./jobs/MyJobs";
 import { popUpShow, popupHide } from "../components/LoadingIndicator";
 import NetworkError from "~/components/Errors/NetworkError";
+import FindJobs from "./FindJobs";
 
 export default {
   components: {
@@ -45,6 +45,7 @@ export default {
     appNotifications: Notifications,
     appMyJobs: MyJobs,
     appNetworkError: NetworkError,
+    FindJobs
   },
   computed: {
     message() {
@@ -79,7 +80,15 @@ export default {
     printTest() {
       console.log(this.selectedJobTimes);
     },
-    navigateToJobs() {
+      navigateToFindJobs() {
+          this.$navigateTo(FindJobs, {
+              transition: {
+                  name: "fade",
+                  duration: 500,
+              },
+          });
+      },
+      navigateToJobs() {
       this.$navigateTo(MyJobs, {
         transition: {
           name: "fade",
