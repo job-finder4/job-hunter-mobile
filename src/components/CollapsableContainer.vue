@@ -7,12 +7,11 @@
       </FormattedString>
     </Label> -->
 
-
     <FlexboxLayout style="width:100%" class="ma-0 pa-0"  alignContent="center" alignItems="center">
       <Button
               width="100%"
               androidElevation="1"
-              class="myBtn border-b-2 border-t-2 border-green-600 divide-y divide-blue-400 btn-outlined"
+              class="myBtn border-b-2 border-t-2 border-grey-600 divide-y divide-blue-400 btn-outlined"
               style="text-align: left;background-color:white; margin:0;"
               @tap="elementLoaded" >
         <FormattedString>
@@ -24,7 +23,7 @@
 
       <Button
               style="margin:0;padding:0"
-              class="myBtn border-b-2 border-t-2 border-green-600 divide-y divide-blue-400 btn-outlined"
+              class="myBtn border-b-2 border-t-2 border-grey-600 divide-y divide-blue-400 btn-outlined"
               androidElevation="1"
               @tap="elementLoaded">
         <FormattedString>
@@ -34,7 +33,7 @@
       </Button>
     </FlexboxLayout>
 
-    
+
     <CollapseItem
       ref="myElement"
       :class="visible ? 'dropDownCheckboxGroup' : ''"
@@ -64,6 +63,7 @@ export default {
   },
   methods: {
     elementLoaded() {
+      console.log(this.$refs.myElement.style);
       // if (this.visible) {
       //   this.$refs.myElement.nativeView
       //     .animate({ duration: 500, translate: { x: 0, y: -5 } })
@@ -84,7 +84,16 @@ export default {
   animation-name: dropDownAnimation;
   animation-duration: 0.3s;
   animation-fill-mode: forwards;
+  transition:all 2s;
 }
+/* @keyframes dropDownAnimation {
+  0% {
+    transform: scale(0, 0.5);
+  }
+  100% {
+    transform: scale(0,1)
+  }
+} */
 @keyframes dropDownAnimation {
   0% {
     transform: translate(0, -10);

@@ -24,14 +24,14 @@
             userInteractionEnabled: false, // default true. Set false so that the touches will fall through it.
             hideBezel: true, // default false, can hide the surrounding bezel
             mode: Mode.Indeterminate, // see options below
-            android: {
-                view: someStackLayout,// Target view to show on top of (Defaults to entire window)
-                // view: android.view.View, // Target view to show on top of (Defaults to entire window)
-                cancelable: true,
-                cancelListener: function (dialog) {
-                    console.log('Loading cancelled');
-                },
-            },
+            // android: {
+            //     view: someStackLayout,// Target view to show on top of (Defaults to entire window)
+            //     // view: android.view.View, // Target view to show on top of (Defaults to entire window)
+            //     cancelable: true,
+            //     cancelListener: function (dialog) {
+            //         console.log('Loading cancelled');
+            //     },
+            // },
         };
         loader.show(options); // options is optional
     }

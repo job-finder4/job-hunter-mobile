@@ -1,20 +1,25 @@
 <template>
     <Page @loaded="showLoading" @navigatingFrom="destroyComp" class="bg-indigo-100">
-        <ActionBar
-                title="Notifications" android:flat="true">
-                <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="$navigateBack"/>
+<!--        <ActionBar-->
+<!--                title="Notifications" android:flat="true">-->
+<!--                <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="$navigateBack"/>-->
+<!--        </ActionBar>-->
+        <ActionBar>
+            <GridLayout width="100%" columns="auto, *">
+                <Label text="MENU" @tap="openDrawer()" col="0"/>
+                <Label class="title" text="Notifications"  col="1"/>
+            </GridLayout>
         </ActionBar>
-
-        <StackLayout class="mx-8">
+        <!-- <StackLayout class="mx-8">
             <Label style="font-size:60px" class="fa text-center" :text="'fa-bell' | fonticon"></Label>
-            <Label text="job.title" class="text-2xl font-weight-bold text-blue-600 ml-2 "></Label>
-        </StackLayout>
+        </StackLayout> -->
 
-        <Stacklayout id="myF" ref="myFF">
+        <Stacklayout v-if="notifications.length===0&&!isLoading" >
             <Label style="font-size:60px" class="fa text-center" :text="'fa-bell' | fonticon"></Label>
+            <Label style="font-size:40px" class="fa text-center" text="You Have not any notifications Yet."></Label>
         </Stacklayout>
 
-        <StackLayout v-if="notifications.length>0&&!isLoading">
+        <StackLayout v-if="notifications.length>0&&!isLoading" ref="myFF">
             <ListView for="notification in notifications">
                 <v-template>
                     <appSingleNotification :notification="notification"/>
@@ -26,14 +31,14 @@
 </template>
 
 <script>
-    import {popUpShowIndicator, popupHideIndicator} from "./LoadingIndicator";
-    import SingleNotification from "./notifications/SingleNotification"
-    import {showNetworkError} from "./Errors/ErrorController";
-    import NetworkError from "./Errors/NetworkError";
+    import {popUpShowIndicator, popupHideIndicator} from "~/components/LoadingIndicator";
+    import SingleNotification from "~/components/notifications/SingleNotification"
+    import sideDrawer from "../mixins/sideDrawer";
+
     export default {
+        mixins:[sideDrawer],
         components: {
             appSingleNotification: SingleNotification,
-            NetworkError
         },
         computed: {
             notifications() {
@@ -52,16 +57,16 @@
             showLoading() {
                 this.isLoading = true
                 // console.log('execured')
-                // popUpShowIndicator('this.$refs.myFF')
+                popUpShowIndicator('this.$refs.myFF.android')
 
                 this.$store.dispatch('retrieveNotification')
                     .then((res) => {
                         this.isLoading = false
-                        // popupHideIndicator()
+                        popupHideIndicator()
                     })
                     .catch((err) => {
                         console.log('notification Not arrived')
-                        // popupHideIndicator()
+                        popupHideIndicator()
                         // this.$navigateTo(NetworkError, {
                         //     transition: {
                         //         name: 'fade',

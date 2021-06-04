@@ -1,7 +1,13 @@
 <template>
     <Page class="bg-indigo-100">
+<!--        <ActionBar>-->
+<!--            <NavigationButton text="Go Back" android.systemIcon="ic_menu_back"/>-->
+<!--        </ActionBar>-->
         <ActionBar>
-            <NavigationButton text="Go Back" android.systemIcon="ic_menu_back"/>
+            <GridLayout width="100%" columns="auto, *">
+                <Label text="MENU" @tap="openDrawer()" col="0"/>
+                <Label class="title" text="Welcome"  col="1"/>
+            </GridLayout>
         </ActionBar>
 
         <StackLayout ref="waiting"></StackLayout>
@@ -31,14 +37,15 @@
 </template>
 
 <script>
-    import Notifications from "./Notifications";
+    import sideDrawer from '~/mixins/sideDrawer'
     import AutoComplete from "~/components/AutoComplete";
     import CollapsableContainer from "~/components/CollapsableContainer";
-    import FilterResult from "~/components/FilterResult";
+    import FilterResult from "~/views/FilterResult";
     import {popUpShowIndicator, popupHideIndicator} from "~/components/LoadingIndicator";
-    import FilterComponent from "./FilterComponent";
+    import FilterComponent from "~/views/FilterComponent";
 
     export default {
+        mixins: [ sideDrawer ],
         components: {
             appCollapsableContainer: CollapsableContainer,
             FilterResult,
@@ -59,6 +66,7 @@
         },
         data() {
             return {
+
             };
         },
         methods: {

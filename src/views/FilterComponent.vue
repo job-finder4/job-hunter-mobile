@@ -4,9 +4,10 @@
       <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" @tap="$navigateBack"/>
 
       <FlexboxLayout
+        align="right"
         justifyContent="flex-end"
         alignItems="center"
-        style="width: 100%; background-color: red"
+        style="width: 100%;"
       >
         <Label text="Filter" class="text-2xl" />
         <Button
@@ -33,6 +34,10 @@
         <CheckboxGroupd :items="locations" v-model="filters.locations" />
       </appCollapsableContainer>
 
+<!--      <appCollapsableContainer class="my-1" title="Locations">-->
+<!--        <CheckboxGroupd :items="categories" v-model="filters.locations" />-->
+<!--      </appCollapsableContainer>-->
+
       <Button
         style="color: white"
         text="Apply Filters"
@@ -45,9 +50,8 @@
 
 <script>
 import CollapsableContainer from "~/components/CollapsableContainer";
-import FilterResult from "~/components/FilterResult";
+import FilterResult from "~/views/FilterResult";
 import { popUpShowIndicator, popupHideIndicator } from "~/components/LoadingIndicator";
-import FindJobs from "./FindJobs";
 
 export default {
   components: {
@@ -58,6 +62,9 @@ export default {
   computed: {},
   data() {
     return {
+      categories:[
+
+      ],
       locations: [
         "Lattakia",
         "Cairo",
@@ -67,11 +74,12 @@ export default {
         "Tartus",
         "Homs",
         "Port Fleta,Hong Kong",
+        "West Josue, Panama"
       ],
       jobTimes: ["FULL_TIME", "PART_TIME"],
       jobTypes: ["ON_SITE", "REMOTE"],
       filters: {
-        jobTimes: ["FULL_TIME"],
+        jobTimes: [],
         jobTypes: [],
         locations: [],
       },
@@ -88,14 +96,14 @@ export default {
     },
     applyFilters() {
         let p={};
-      if (this.filters.job_times.length > 0) {
+      if (this.filters.jobTimes.length > 0) {
           p.job_times=JSON.stringify(this.filters.jobTimes)
       }
       if (this.filters.locations.length > 0) {
-          locations: JSON.stringify(this.filters.locations)
+        p.locations=JSON.stringify(this.filters.locations)
       }
-      if (this.filters.job_types.length > 0) {
-          job_types: JSON.stringify(this.filters.jobTypes)
+      if (this.filters.jobTypes.length > 0) {
+        p.job_types=JSON.stringify(this.filters.jobTypes)
       }
       this.$store.commit("SET_FILTER_PARAMS", {
         ...p

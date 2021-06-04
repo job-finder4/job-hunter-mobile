@@ -1,6 +1,5 @@
 /* eslint-disable */
 import axios from 'axios'
-// import router from "../router";
 import store from '../store'
 import * as appSettings from "application-settings";
 import MyJobs from "../components/jobs/MyJobs";
@@ -8,7 +7,6 @@ import MyJobs from "../components/jobs/MyJobs";
 export const apiClient = axios.create({
     baseURL: 'http://192.168.1.105/55nuxt-laravel-passport-example-master/nuxt-laravel-passport-example-master/laravel/public/api/',
     // baseURL: 'https://0ff256543af2.ngrok.io/api/',
-    timeout: 2500,
 })
 
 apiClient.interceptors.request.use(
@@ -23,10 +21,9 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     response => response,
     error => {
-
         if (error.response.status === 401 && appSettings.getString('access_token')) {
-            appSettings.removeString('access_token')
-            appSettings.removeString('refresh_token')
+            appSettings.remove('access_token')
+            appSettings.remove('refresh_token')
             // location.reload()
             this.$navigateTo(App, {
                 transition: {

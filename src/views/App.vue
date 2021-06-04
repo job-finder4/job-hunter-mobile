@@ -29,9 +29,12 @@
 </template>
 
 <script>
+    import sideDrawer from "../mixins/sideDrawer";
     import Home from "./Home";
+    import {popUpShowIndicator, popupHideIndicator} from "~/components/LoadingIndicator";
 
     export default {
+        mixins:[sideDrawer],
         data() {
             return {
                 msg: 'Hello World!',
@@ -44,6 +47,7 @@
         methods: {
             goTo() {
                 this.$navigateTo(Home, {
+                 slot: 'mainContent' ,
                     transition: {
                         name: 'fade',
                         duration: 500
@@ -51,9 +55,17 @@
                 })
             },
             onLogin() {
-                this.$store.dispatch('login', this.credentials).then((resp) => {
-                    this.goTo()
-                })
+                popUpShowIndicator("s")
+                this.$store.dispatch('login', this.credentials)
+                    .then(resp => {
+                        this.goTo()
+                        this.$store.dispatch('subscribeForNotifications')
+                        popupHideIndicator()
+                    })
+                    .catch(er => {
+                        console.log(er)
+                        popupHideIndicator()
+                    })
             }
         },
 

@@ -21,7 +21,7 @@
           @tokenRemoved="onTokenRemoved"
           verticalAlignment="center"
         >
-          <SuggestionView ~suggestionView suggestionViewHeight="300">
+          <SuggestionView ~suggestionView suggestionViewHeight="300" style="background-color:transparent">
             <StackLayout v-suggestionItemTemplate orientation="vertical">
               <v-template>
                 <Label class="myLabel" :text="item.text"></Label>
@@ -46,8 +46,8 @@
 
 <script>
 import CollapsableContainer from "~/components/CollapsableContainer";
-import FindJobs from "./FindJobs";
-import FilterResult from "~/components/FilterResult";
+import FindJobs from "../views/FindJobs";
+import FilterResult from "~/views/FilterResult";
 import { popUpShowIndicator, popupHideIndicator } from "~/components/LoadingIndicator";
 import { ObservableArray } from "@nativescript/core/data/observable-array";
 import {
@@ -56,7 +56,12 @@ import {
   AutoCompleteSuggestMode,
   TokenModel,
 } from "nativescript-ui-autocomplete";
-import Notifications from "./Notifications";
+
+  import locations from '~/static/locations.json'
+  import categories from '~/static/categories.json'
+  import skills from '~/static/skills.json'
+  import jobsTitle from '~/static/jobsTitle.json'
+
 
 export default {
   components: {
@@ -66,9 +71,11 @@ export default {
   },
   data() {
     return {
+      suggestedLocations: locations,
+      suggestedTerms: categories.map(item => item.name).concat(skills.map(item => item.name), jobsTitle),
       searchPhrase: "",
       typedText: "",
-      completionMode: AutoCompleteCompletionMode.Contains,
+      completionMode: AutoCompleteCompletionMode.StartsWith,
       suggestMode: AutoCompleteSuggestMode.Suggest,
       displayMode: AutoCompleteDisplayMode.Tokens,
       searchItems: new ObservableArray(),
@@ -114,26 +121,7 @@ export default {
       console.log("fff");
     },
     getInitial() {
-      const dataSearch = [
-        "Aldous Huxley",
-        "Per Gynt",
-        "Karolina Allison",
-        "Cyrus Sheehan",
-        "Beatrix Castillo",
-        "Tammy Avery",
-        "Aryan Atherton",
-        "Florin Esco",
-        "Romy Akhtar",
-        "Test Test",
-        "Sturgis P.Sturgeon",
-        "Jules Metcalfe",
-        "Abby Dawe",
-        "Aron Myr",
-        "Tori Kenny",
-        "Richard Patclark",
-        "Tess Meza",
-      ];
-      dataSearch.forEach((val) => {
+      this.suggestedTerms.forEach((val) => {
         this.searchItems.push(new TokenModel(val, null));
       });
     },
@@ -188,16 +176,17 @@ export default {
 }
 
 .myLabel {
-  border-width: 3;
   /* border-radius: 10; */
-  /*margin: 10;*/
+  margin: 3;
   text-align: center;
   /*padding: 10;*/
   font-size: 15;
   vertical-align: center;
 }
 .search-btn{
-    margin: 0; padding: 0;background-color: Transparent;border: none;outline:none;
+    margin: 0; padding: 0;
+    background-color: Transparent;
+    border: none;outline:none;
     border-top-color: Transparent;
     border-left-color: Transparent;
     border-right-color: Transparent;
