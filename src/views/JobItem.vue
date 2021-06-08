@@ -18,14 +18,19 @@
             <Label :text="jobDetails.company.data.attributes.name" class="text-xs"/>
           </StackLayout>
 
-          <Label  colSpan="100%"  row="1" col="0 " :text="'Expired at: '+jobDetails.exact_expiration_date"/>
-          <Label row="1" col="1" :text="jobDetails.job_type" class="text-right"/>
+          <Label colSpan="100%" row="1" col="0 " :text="'Expired at: '+jobDetails.exact_expiration_date"/>
+          <Label row="1" col="1" :text="jobDetails.job_type" class="text-right" horizontalAlignment="right"/>
 
         </GridLayout>
 
-        <StackLayout class="p-6">
+        <Label v-if="jobDetails.hasOwnProperty('applied_at') && !!jobDetails.applied_at"
+               class="application-status"
+               :class="applicationLabel.class"
+               :text="applicationLabel.text"
+        />
 
-          <Label  class="font-bold mb-2 font-serif" text="Details:"/>
+        <StackLayout class="p-6">
+          <Label class="font-bold mb-2 font-serif" text="Details:"/>
           <StackLayout
             class="bg-white ml-2 mb-8 border-gray-300 border-opacity-50 border-2 divide-y-2 divide-gray-200 divide-opacity-50 space-y-4 rounded-lg p-4"
           >
@@ -75,7 +80,8 @@
             class="bg-white font-serif ml-2 mb-10 border-gray-300 border-opacity-50 divide-y-2 divide-gray-200 divide-opacity-50 space-y-4 rounded-lg border-2 p-4"
           >
 
-            <Label textWrap="true" v-for="skill in jobDetails.skills.data" :text="skill.data.attributes.name" :key="'skill-'+skill.data.id"/>
+            <Label textWrap="true" v-for="skill in jobDetails.skills.data" :text="skill.data.attributes.name"
+                   :key="'skill-'+skill.data.id"/>
 
           </StackLayout>
 
@@ -88,10 +94,11 @@
 
         </StackLayout>
 
-        <Button class="nt-button"
-                style="background-color:rgb(100,100,200);color:white"
-                text="Apply"
-                @tap="navigateToUploadedCvs"
+        <Button
+          class="apply-button"
+          text="Apply"
+          v-if="jobDetails.hasOwnProperty('applied_at') && !jobDetails.applied_at"
+          @tap="navigateToUploadedCvs"
         />
 
       </StackLayout>
@@ -108,22 +115,43 @@
     props: {
       jobadId: {
         type: Number,
-        required:true
+        required: true
       },
     },
     data() {
       return {
-        jobId: null,
-        jobDetails: null
+        jobDetails: null,
+        applicationStatus: 0
+      }
+    },
+    computed: {
+      applicationLabel() {
+        if (this.applicationStatus == -1)
+          return {
+            text: 'Unfortunately!  Your application is refused',
+            class: 'refused-application'
+          }
+
+        if (this.applicationStatus == 1)
+          return {
+            text: 'Congratulation!  Your application is Accepted',
+            class: 'accepted-application'
+          }
+
+        return {
+          text: 'Wait... Your application is not evaluated yet',
+          class: 'pending-application'
+        }
       }
     },
     methods: {
       onPageLoaded() {
-        this.$axios.get('jobads/'+this.jobadId)
+        return  this.$axios.get('jobads/'+this.jobadId)
           .then(({data}) => {
             this.jobId = data.data.id
             this.jobDetails = data.data.attributes
-            this.jobDetails.company.data.attributes.image = this.jobDetails.company.data.attributes.image.replace('http','https')
+            // this.jobDetails.company.data.attributes.image = this.jobDetails.company.data.attributes.image.replace('http', 'https')
+            this.applicationStatus = data.data.attributes.application_status
           })
           .catch(err => {
             console.log(err.response.data);
@@ -134,15 +162,44 @@
           fullscreen: true,
           animated: true
         })
-        .then(file=>{
-          this.$axios.post(`jobads/${this.jobId}/applications`,{
-            cv_id:file.id
+          .then(file => {
+            this.$axios.post(`jobads/${this.jobId}/applications`, {
+              cv_id: file.id
+            })
+              .then(res => {
+                this.applicationStatus = 0
+                this.jobDetails.applied_at = new Date()
+                this.$showToast('application process successful')
+              })
+              .catch(e => {
+                this.$showToast(e.response.data.errors.description)
+              })
           })
-        })
       },
     },
   };
 </script>
-<style lang="">
+<style>
+  .apply-button {
+    background-color: rgb(100, 100, 200);
+    color: white;
+  }
 
+  .application-status {
+    color: white;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .pending-application {
+    background-color: gray;
+  }
+
+  .accepted-application {
+    background-color: green;
+  }
+
+  .refused-application {
+    background-color: red;
+  }
 </style>

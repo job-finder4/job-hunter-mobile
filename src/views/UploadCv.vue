@@ -93,11 +93,13 @@
         const bgHttp = require("@nativescript/background-http");
         let session = bgHttp.session("cv-upload");
         let request = {
-          url: 'https://e1f88d4e2d90.ngrok.io/api/cvs',
+
+          url: 'http://192.168.43.233/55nuxt-laravel-passport-example-master/nuxt-laravel-passport-example-master/laravel/public/api/cvs',
           method: "POST",
           headers: {
             "Content-Type": "multipart/form-data" ,
             "File-Name": 'cv_file',
+            'authorization': 'Bearer ' + this.$store.getters.getAccessToken
           },
           description: 'FileName',
           androidMaxRetries: 3,
@@ -127,8 +129,8 @@
         });
 
         task.on("responded", (e) => {
-          console.log(JSON.parse(e.data));
           this.$modal.close(JSON.parse(e.data))
+          this.$showToast('uploaded successfully')
         })
 
         this.task = task

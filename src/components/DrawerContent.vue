@@ -29,6 +29,8 @@
           { name: 'Find Jobs', component: this.$routes.FindJobs },
           { name: 'My Applications', component: this.$routes.MyApplications },
           { name: 'Notifications', component: this.$routes.Notifications },
+          { name: 'Job Preference', component: this.$routes.JobPreference },
+          { name: 'My Resumes', component: this.$routes.MyCvs },
         ]
       }
     },
@@ -37,10 +39,12 @@
         return this.$store.getters.isLoggedIn
       },
       userName(){
-        // if(this.isAuth){
-        //   return this.$store.getters.getUser.data.attributes.name;
-        // }
-        return "Login Please"
+        if(this.isAuth){
+          if(!!this.$store.getters.getUser){
+            return this.$store.getters.getUser.data.attributes.name;
+          }
+        }
+        return "Hello JobSeeker"
       }
     },
     methods: {

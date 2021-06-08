@@ -1,9 +1,9 @@
 <template>
     <StackLayout>
         <StackLayout class="my-2 mx-2 rounded-xl bg-indigo-50">
-<!--            <Label textWrap="true"-->
-<!--                      class="text-2xl text-blue-600 ml-1 "-->
-<!--                      v-model="job.data.attributes.title"/>-->
+            <!--            <Label textWrap="true"-->
+            <!--                      class="text-2xl text-blue-600 ml-1 "-->
+            <!--                      v-model="job.data.attributes.title"/>-->
             <Button @tap="navigateToJob"
                     androidElevation="0"
                     style="background-color:transparent;"
@@ -21,13 +21,26 @@
                 <Label textWrap="true">
                     <FormattedString>
                         <Span style="font-size: 18px" class="fa" :text="'fa-map-marker' | fonticon"/>
-                        <Span  class="text-xl" :text="' '+job.data.attributes.location"></Span>
+                        <Span class="text-xl" text="location"/>
+                        <Span class="text-xl" :text="' '+job.data.attributes.location"></Span>
                     </FormattedString>
                 </Label>
                 <Label textWrap="true">
                     <FormattedString>
                         <Span style="font-size: 18px" class="fa" :text="'fa-calendar' | fonticon"/>
                         <Span class="text-xl" :text="' '+job.data.attributes.approved_at"></Span>
+                    </FormattedString>
+                </Label>
+                <Label textWrap="true">
+                    <FormattedString>
+                        <Span class="text-xl black" text="job type"/>
+                        <Span class="text-xl" :text="' '+job.data.attributes.job_type"/>
+                    </FormattedString>
+                </Label>
+                <Label textWrap="true">
+                    <FormattedString>
+                        <Span class="text-xl black" style="font-width: bold;" text="job Time"/>
+                        <Span class="text-xl" :text="' '+job.data.attributes.job_time"/>
                     </FormattedString>
                 </Label>
                 <!--        </FlexboxLayout>-->
@@ -45,7 +58,7 @@
     import JobItem from "~/views/JobItem"
 
     export default {
-        components:{
+        components: {
             JobItem
         },
         props: {

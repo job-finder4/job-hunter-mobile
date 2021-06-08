@@ -45,7 +45,7 @@
         },
         props: {
             application: {
-                type: Number,
+                type: Object,
                 required: true,
             },
         },

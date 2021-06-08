@@ -22,15 +22,14 @@ export default {
     mutations: {
         //jobSeeker
         GET_ALL_JOBS(state, data) {
-            state.jobads = data
+            // state.jobads = data
+            state.jobads.push(...data)
         },
         CLEAR_JOBADS(state) {
             state.jobads = []
         },
         SET_SEARCH_PARAMS(state, search) {
             state.search = search
-            console.log("search")
-            console.log(search)
         },
         SET_ADVANCED_SEARCH_PARAMS(state, advancedSearch) {
             state.advancedSearch = advancedSearch

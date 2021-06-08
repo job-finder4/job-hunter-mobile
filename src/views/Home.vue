@@ -11,9 +11,6 @@
             </GridLayout>
         </ActionBar>
 
-
-
-
         <StackLayout>
             <Button text="Connect" @tap="navigateToFindJobs" class="nt-button"></Button>
             <Button text="Notifications" @tap="navigate" class="nt-button"></Button>

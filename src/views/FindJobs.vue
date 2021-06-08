@@ -102,23 +102,31 @@
 </script>
 <style >
     .myTextfield{
-        font-size: 18px;
+        font-family: 'GT America';
+        font-weight: 300;
+        font-size: 18;
+        color: #000000;
+        padding: 15 20;
+        border-radius: 2;
+
         background-color: white;
 
-        border-top-width: 5px;
-        border-top-color: white;
-        border-top-left-radius: 10px;
+        /*font-size: 18px;*/
 
-        border-right-width: 5px;
-        border-right-color: white;
-        border-top-right-radius: 10px;
+        /*border-top-width: 5px;*/
+        /*border-top-color: white;*/
+        /*border-top-left-radius: 10px;*/
 
-        border-left-width: 5px;
-        border-left-color: white;
-        border-bottom-left-radius: 10px;
+        /*border-right-width: 5px;*/
+        /*border-right-color: white;*/
+        /*border-top-right-radius: 10px;*/
 
-        border-bottom-width: 5px;
-        border-bottom-color: white;
-        border-bottom-right-radius: 10px;
+        /*border-left-width: 5px;*/
+        /*border-left-color: white;*/
+        /*border-bottom-left-radius: 10px;*/
+
+        /*border-bottom-width: 5px;*/
+        /*border-bottom-color: white;*/
+        /*border-bottom-right-radius: 10px;*/
     }
 </style>

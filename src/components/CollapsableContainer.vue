@@ -1,5 +1,5 @@
 <template>
-  <StackLayout style="background-color:white;" class="mx-2 pa-0">
+  <StackLayout  style="background-color:white;" class="mx-2 pa-0 " >
     <!-- <Label @tap="elementLoaded" class="text-xl">
       <FormattedString>
         <Span :text="title" fontAttributes="Bold"></Span>
@@ -33,14 +33,21 @@
       </Button>
     </FlexboxLayout>
 
-
-    <CollapseItem
-      ref="myElement"
-      :class="visible ? 'dropDownCheckboxGroup' : ''"
-      :visible="visible"
-    >
+    <StackLayout
+            ref="myElement"
+            class="collapseContainer"
+            :visibility="visible ? '' : 'collapsed'">
       <slot></slot>
-    </CollapseItem>
+    </StackLayout>
+
+<!--    <CollapseItem-->
+<!--      ref="myElement"-->
+<!--      :class="visible ? 'dropDownCheckboxGroup' : ''"-->
+<!--      :visible="visible"-->
+<!--    >-->
+<!--      <slot></slot>-->
+<!--    </CollapseItem>-->
+
   </StackLayout>
 </template>
 
@@ -63,7 +70,8 @@ export default {
   },
   methods: {
     elementLoaded() {
-      console.log(this.$refs.myElement.style);
+      console.log(this.$refs.myElement);
+
       // if (this.visible) {
       //   this.$refs.myElement.nativeView
       //     .animate({ duration: 500, translate: { x: 0, y: -5 } })
@@ -80,6 +88,12 @@ export default {
 };
 </script>
 <style scoped>
+  .collapseContainer{
+    transition:all 3s;
+    height: max-content;
+  }
+
+
 .dropDownCheckboxGroup {
   animation-name: dropDownAnimation;
   animation-duration: 0.3s;

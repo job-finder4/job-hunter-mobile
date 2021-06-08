@@ -14,9 +14,9 @@
             <Label style="font-size:60px" class="fa text-center" :text="'fa-bell' | fonticon"></Label>
         </StackLayout> -->
 
-        <Stacklayout v-if="notifications.length===0&&!isLoading" >
-            <Label style="font-size:60px" class="fa text-center" :text="'fa-bell' | fonticon"></Label>
-            <Label style="font-size:40px" class="fa text-center" text="You Have not any notifications Yet."></Label>
+        <Stacklayout v-if="notifications.length===0&&!isLoading"  verticalAlignment="center">
+            <Label verticalAlignment="center" style="font-size:60px" class="fa text-center" :text="'fa-bell' | fonticon"></Label>
+            <Label verticalAlignment="center" textWrap="true" style="font-size:40px" class="fa text-center" text="You Have not any notifications Yet."></Label>
         </Stacklayout>
 
         <StackLayout v-if="notifications.length>0&&!isLoading" ref="myFF">
@@ -33,7 +33,7 @@
 <script>
     import {popUpShowIndicator, popupHideIndicator} from "~/components/LoadingIndicator";
     import SingleNotification from "~/components/notifications/SingleNotification"
-    import sideDrawer from "../mixins/sideDrawer";
+    import sideDrawer from "~/mixins/sideDrawer";
 
     export default {
         mixins:[sideDrawer],

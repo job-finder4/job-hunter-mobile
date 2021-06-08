@@ -5,7 +5,9 @@ import * as appSettings from "application-settings";
 import MyJobs from "../components/jobs/MyJobs";
 
 export const apiClient = axios.create({
-    baseURL: 'http://192.168.1.105/55nuxt-laravel-passport-example-master/nuxt-laravel-passport-example-master/laravel/public/api/',
+    baseURL: 'http://192.168.43.233/55nuxt-laravel-passport-example-master/nuxt-laravel-passport-example-master/laravel/public/api/',
+    	// baseURL: 'http://192.168.43.233/55nuxt-laravel-passport-example-master/nuxt-laravel-passport-example-master/laravel/public/api/',
+
     // baseURL: 'https://0ff256543af2.ngrok.io/api/',
 })
 

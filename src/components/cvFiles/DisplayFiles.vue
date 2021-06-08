@@ -1,62 +1,53 @@
 <template>
-  <ListView @itemTap="onItemTap" v-if="files.length>0" ref="list-view" for="file in files">
-
+  <ListView v-if="files.length>0" ref="list-view" for="file in files">
     <v-template>
-
-      <FlexboxLayout alignItems="center" class="p-4">
-
-        <Label
-          v-if="(!!selectedFile && selectedFile.id === file.id)"
-          class="fa text-6xl"
-          style="margin-right:50px"
-          :text="'fa-check-square' | fonticon"
-        />
-
-        <Label
-          v-else
-          class="fa text-6xl blue"
-          style="color:orangered;margin-right:50px"
-          :text="'fa-file-pdf' | fonticon"
-        />
-
-        <Label textWrap="true" flexGrow="1">
-          <FormattedString>
-            <Span :text="file.name" class="text-xl text-black" style="text-overflow: ellipsis;white-space: nowrap"/>
-            <Span text="\n"/>
-            <Span :text="'modified at: '+file.lastModified" class="text-gray-400"/>
-            <Span text="\n"/>
-            <Span v-if="file.size" :text="file.size" class="text-gray-400"/>
-          </FormattedString>
-        </Label>
-
-      </FlexboxLayout>
-
+      <FileView @change:selectedFile="onChangeSelectedFile"
+                @change:showSettings="onChangeShowSettings"
+                :show-setting="showSetting"
+                :selected-file="selectedFile"
+                :file="file"
+                :settings="settings"/>
     </v-template>
   </ListView>
   <Label class="text-center" v-else text="there is no files"/>
 </template>
 
 <script>
+  import FileView from "./File";
 
   export default {
     name: 'displayFiles',
+    components: {FileView},
     props: {
       files: {
         type: Array,
         required: true
       },
+      settings: {
+        type: Array,
+        default: null
+      },
     },
     data() {
       return {
-        selectedFile: null
+        selectedFile: null,
+        showSetting: -1
       }
     },
     methods: {
-      onItemTap({item}) {
-        this.selectedFile = item
+      onChangeSelectedFile(file) {
+        this.selectedFile = file
         this.$refs['list-view'].refresh()
-        this.$emit('change:selectedFile', this.selectedFile)
+        this.$emit('change:selectedFile',file)
+      },
+      onChangeShowSettings(fileId){
+        this.showSetting = fileId
+        this.$refs['list-view'].refresh()
       },
     },
   }
 </script>
+
+<style>
+
+</style>

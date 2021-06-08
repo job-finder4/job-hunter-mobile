@@ -1,42 +1,51 @@
 <template>
-  <Frame>
-    <Page @loaded="fetchCvFiles">
-      <ActionBar title="uploaded file" class="bg-blue-500" android:flat="true"/>
-      <GridLayout
-        rows="auto,*,auto"
-        columns="*,*"
-      >
-        <Button
-          row="0"
-          col="0"
-          colSpan="100%"
-          height="90"
-          style="background-color: #f6f6f6;"
-          @tap="showUploadFileModal"
-        >
-
-          <FormattedString style="background-color: transparent">
-            <span class="fa text-xl" :text="'fa-upload'|fonticon"/>
-            <span class="text-lg" text="Upload Cv"/>
-          </FormattedString>
-
-        </Button>
-
-        <ActivityIndicator colSpan="100%" row="1" col="0" :busy="loadingCvs" height="50" width="50"/>
-
-        <display-files
-          row="1" col="0"
-          v-if="!loadingCvs"
-          @change:selectedFile="newFileIsSelected"
-          colSpan="100%"
-          :files="files"
-        />
-        <button @tap="done" :isEnabled="!!selectedFile" class="text-white bg-indigo-600" row="2" col="1" text="done"/>
-        <button @tap="cancel" row="2" col="0" text="cancel"/>
+  <Page @loaded="fetchCvFiles">
+    <!--      <ActionBar title="uploaded file" class="bg-blue-500" android:flat="true"/>-->
+    <ActionBar>
+      <GridLayout width="100%" columns="auto, *">
+        <Label text="MENU" @tap="openDrawer()" col="0"/>
+        <Label class="title" text="My Cvs"  col="1"/>
       </GridLayout>
+    </ActionBar>
 
-    </Page>
-  </Frame>
+    <GridLayout
+      rows="auto,*,auto"
+      columns="*,*"
+    >
+      <Button
+        row="0"
+        col="0"
+        colSpan="100%"
+        height="90"
+        style="background-color: #f6f6f6;"
+        @tap="showUploadFileModal"
+      >
+        <FormattedString style="background-color: transparent">
+          <span class="fa text-xl" :text="'fa-upload'|fonticon"/>
+          <span class="text-lg" text="Upload Cv"/>
+        </FormattedString>
+
+      </Button>
+
+      <ActivityIndicator colSpan="100%" row="1" col="0" :busy="loadingCvs" height="50" width="50"/>
+
+      <display-files
+        row="1" col="0"
+        v-if="!loadingCvs"
+        colSpan="100%"
+        :files="files"
+        :settings="settings"
+        ref="display-files"
+        @change:selectedFile="newFileIsSelected"
+      />
+      <template v-if="actionButtons">
+        <button  @tap="done" :isEnabled="!!selectedFile" class="text-white bg-indigo-600" row="2"
+                col="1" text="done"/>
+        <button @tap="cancel" row="2" col="0" text="cancel"/>
+      </template>
+    </GridLayout>
+
+  </Page>
 </template>
 
 <script>
@@ -46,11 +55,27 @@
   export default {
     name: 'UploadedCvs',
     components: {DisplayFiles},
+    props: {
+      actionButtons: {
+        type: Boolean,
+        default: true
+      },
+      selectAble: {
+        type: Boolean,
+        default: true
+      }
+    },
     data() {
       return {
         files: [],
         loadingCvs: true,
-        selectedFile: null
+        selectedFile: null,
+        settings: [
+          {
+            name: 'download',
+            actionName: 'download'
+          }
+        ]
       }
     },
     methods: {
@@ -63,10 +88,15 @@
         })
       },
       fetchCvFiles() {
-        this.$axios.get('/user/my-cvs')
+        if (this.selectAble) {
+          this.settings.push({
+            name: 'select',
+            actionName: 'select'
+          })
+        }
+        return  this.$axios.get('/user/my-cvs')
           .then(response => {
             this.saveCvs(response.data.data)
-            console.log(this.files)
           })
           .finally(() => {
             this.loadingCvs = false

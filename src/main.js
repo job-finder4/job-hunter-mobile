@@ -6,7 +6,7 @@ import Vue from 'nativescript-vue';
 import {Fontawesome} from 'nativescript-fontawesome';
 import {TNSFontIcon, fonticon} from 'nativescript-fonticon';
 import FindJobs from "./views/FindJobs";
-import { apiClient } from './services/apiService';
+import {apiClient} from './services/apiService';
 import RadAutoComplete from 'nativescript-ui-autocomplete/vue';
 import RadListView from 'nativescript-ui-listview/vue';
 import CheckboxGroup from "./components/CheckboxGroup";
@@ -49,7 +49,7 @@ Vue.registerElement(
 
 Vue.use(RadAutoComplete);
 Vue.use(RadListView);
-Vue.component('CheckboxGroupd',CheckboxGroup);
+Vue.component('CheckboxGroupd', CheckboxGroup);
 
 
 const popUpShowToast = function (message) {
@@ -82,23 +82,22 @@ Vue.prototype.$axios = apiClient
 
 const loggedIn = store.getters.isLoggedIn;
 if (loggedIn) {
-    store.dispatch("initApp").then(res=>{
-        store.dispatch('subscribeForNotifications')
-    })
-
+    store.dispatch("initApp")
+        .then(res => {
+            store.dispatch('subscribeForNotifications')
+        })
 }
 
-// import BottomNavigationBar from 'nativescript-bottom-navigation/vue';
-// Vue.use(BottomNavigationBar);
+
 new Vue({
     store,
-    render (h) {
+    render(h) {
         return h(
             sideDrawer,
             [
-                h(drawerContent, { slot: 'drawerContent' }),
+                h(drawerContent, {slot: 'drawerContent'}),
                 // h(routes.App, { slot: 'mainContent' }),
-                h(loggedIn ? routes.Home:routes.App,{ slot: 'mainContent' })
+                h(loggedIn ? routes.Home : routes.App, {slot: 'mainContent'})
             ]
         )
     }
